@@ -1,6 +1,8 @@
 package org.example.backend.domain.member.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,6 +30,7 @@ public class Member {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private MemberRole role;
 
     private String refreshToken;
@@ -38,6 +41,12 @@ public class Member {
             .nickname(nickname)
             .password(password)
             .role(role)
+            .build();
+    }
+
+    public static Member setRefreshToken(Member member, String refreshToken) {
+        return member.toBuilder()
+            .refreshToken(refreshToken)
             .build();
     }
 }
