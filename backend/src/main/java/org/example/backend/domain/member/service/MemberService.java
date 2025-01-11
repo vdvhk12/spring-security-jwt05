@@ -1,5 +1,6 @@
 package org.example.backend.domain.member.service;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.domain.member.dto.MemberDto;
 import org.example.backend.domain.member.dto.MemberForm;
@@ -20,5 +21,10 @@ public class MemberService {
         return MemberDto.from(memberRepository.save(
             Member.of(memberForm.getUsername(), memberForm.getNickname(),
                 passwordEncoder.encode(memberForm.getPassword()), MemberRole.USER)));
+    }
+
+    public MemberDto getMemberById(Long id) {
+        Optional<Member> member = memberRepository.findById(id);
+        return  member.map(MemberDto::from).orElse(null);
     }
 }
