@@ -35,4 +35,17 @@ public class AuthService {
     private void saveRefreshToken(Member member, String refreshToken) {
         memberRepository.save(Member.setRefreshToken(member, refreshToken));
     }
+
+    public String tokenRefresh(String refreshToken) {
+        if (jwtProvider.validateToken(refreshToken)) {
+            String username = jwtProvider.getUsernameFromToken(refreshToken);
+            Member member = memberRepository.findByUsername(username).orElse(null);
+
+            if(member != null && member.getRefreshToken().equals(refreshToken)) {
+                return jwtProvider.generateAccessToken(member.getId(), username, member.getRole());
+            }
+        }
+
+        return "Invalid refresh token";
+    }
 }
