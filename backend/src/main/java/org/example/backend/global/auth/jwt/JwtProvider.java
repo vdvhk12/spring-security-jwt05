@@ -14,10 +14,9 @@ import org.springframework.stereotype.Component;
 public class JwtProvider {
 
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private final Long ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000L;
-    private final Long REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000L;
 
     public String generateAccessToken(Long id, String username, MemberRole role) {
+        long ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000L;
         return Jwts.builder()
             .setSubject(username)
             .claim("id", id)
@@ -29,6 +28,7 @@ public class JwtProvider {
     }
 
     public String generateRefreshToken(Long id, String username) {
+        long REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000L;
         return Jwts.builder()
             .setSubject(username)
             .claim("id", id)
