@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(""); // 성공/실패 메시지
+  const navigate = useNavigate(); // 홈으로 리다이렉트할 navigate 함수
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,13 +21,14 @@ function Login() {
 
       if (response.ok) {
         // 성공적으로 응답을 받았을 때
-        const jwtToken = response.headers.get("Authorization"); // JWT 토큰은 Authorization 헤더에 저장
-        const data = await response.json(); // JSON 응답 데이터 (refreshToken 포함)
+        const accessToken = response.headers.get("Authorization"); // JWT 토큰은 Authorization 헤더에 저장
+        console.log("JWT 토큰:", accessToken);
 
-        console.log("JWT 토큰:", jwtToken);
-        console.log("Refresh 토큰:", data.refreshToken);
+        // 액세스 토큰을 localStorage에 저장
+        localStorage.setItem("accessToken", accessToken);
 
         setMessage("로그인 성공!");
+        navigate("/");
       } else {
         const errorData = await response.json();
         setMessage(`로그인 실패: ${errorData.message || "오류 발생"}`);
