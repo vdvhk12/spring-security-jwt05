@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(""); // 성공/실패 메시지 상태
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ function Signup() {
 
       if (response.ok) {
         setMessage("회원가입 성공!");
+        navigate("/");
       } else {
         const errorData = await response.json();
         setMessage(`회원가입 실패: ${errorData.message || "오류 발생"}`);
