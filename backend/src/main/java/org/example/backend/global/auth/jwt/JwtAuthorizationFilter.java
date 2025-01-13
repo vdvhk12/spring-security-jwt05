@@ -25,6 +25,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
         throws ServletException, IOException {
 
+        if(isUnprotectedUrl(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = getTokenFromRequest(request);
 
         if (token != null && jwtProvider.validateToken(token)) {
@@ -56,5 +61,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    // 권한 체크가 필요 없는 URL인지 확인하는 메서드
+    private boolean isUnprotectedUrl(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return path.equals("/auth/login") || path.equals("/join") || path.equals("/auth/refresh"); // 여기서 원하는 URL 패턴을 설정
     }
 }
