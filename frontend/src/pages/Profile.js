@@ -1,38 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { getMemberIdFromToken, getToken } from "../utils/tokenUtils";
+import { getMemberIdFromToken, getToken, refreshAccessToken } from "../utils/tokenUtils";
+import useFetchData from "../hooks/useFetchData";
 
 function Profile() {
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const accessToken = getToken();
+  const id = getMemberIdFromToken()
+  const { data, loading, error} = useFetchData(
+      `http://localhost:8080/api/v1/members/${id}`,
+      accessToken,
+      refreshAccessToken
+  );
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const id = getMemberIdFromToken();
-        const response = await fetch(`http://localhost:8080/api/v1/members/${id}`, {
-          method: "GET",
-          headers: {
-            "Authorization": `${getToken()}`,
-          }
-        });
-        if (!response.ok) {
-          setError("데이터를 불러오는 데 실패했습니다.");
-          return;
-        }
-        const data = await response.json();
-        setUsername(data.username);
-        setNickname(data.nickname);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+    if (data) {
+      setUsername(data.username);
+      setNickname(data.nickname);
+    }
+  }, [data]);
 
   if (loading) {
     return (

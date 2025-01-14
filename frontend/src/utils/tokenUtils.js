@@ -19,3 +19,23 @@ export function getMemberIdFromToken() {
 export function getToken() {
   return localStorage.getItem("accessToken");
 }
+
+export async function refreshAccessToken() {
+  try {
+    const response = await fetch('http://localhost:8080/auth/refresh', {
+      method: 'POST',
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      console.log("Failed to refresh token");
+    }
+
+    const newAccessToken = response.headers.get("Authorization"); // 서버에서 반환된 JWT 토큰
+    localStorage.setItem("accessToken", newAccessToken);
+    return newAccessToken;
+  } catch (error) {
+    console.error('Token refresh failed: ', error);
+    throw error;
+  }
+}

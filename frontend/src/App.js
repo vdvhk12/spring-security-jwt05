@@ -10,19 +10,19 @@ import Profile from "./pages/Profile";
 
 
 function App() {
-  return (
-      <Router>
-        <AuthProvider>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-        </AuthProvider>
-      </Router>
-  );
+    return (
+        <Router>
+            <AuthProvider>
+                <Navbar/>
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/signup" element={<Signup/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
+                </Routes>
+            </AuthProvider>
+        </Router>
+    );
 }
 
 export default App;
