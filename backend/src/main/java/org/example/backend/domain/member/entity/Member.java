@@ -26,20 +26,26 @@ public class Member {
 
     private String username;
 
+    private String email;
+
     private String nickname;
 
     private String password;
+
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
     private String refreshToken;
 
-    public static Member of(String username, String nickname, String password, MemberRole role) {
+    public static Member of(String username, String email, String nickname, String password, String address, MemberRole role) {
         return Member.builder()
             .username(username)
+            .email(email)
             .nickname(nickname)
             .password(password)
+            .address(address)
             .role(role)
             .build();
     }

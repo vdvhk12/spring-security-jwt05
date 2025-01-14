@@ -19,8 +19,9 @@ public class MemberService {
 
     public MemberDto join(MemberForm memberForm) {
         return MemberDto.from(memberRepository.save(
-            Member.of(memberForm.getUsername(), memberForm.getNickname(),
-                passwordEncoder.encode(memberForm.getPassword()), MemberRole.USER)));
+            Member.of(memberForm.getUsername(), memberForm.getEmail(), memberForm.getNickname(),
+                passwordEncoder.encode(memberForm.getPassword()), memberForm.getAddress(),
+                MemberRole.USER)));
     }
 
     public MemberDto getMemberById(Long id) {

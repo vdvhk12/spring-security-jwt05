@@ -8,6 +8,8 @@ import lombok.Setter;
 public class MemberForm {
 
     private String username;
+    private String email;
     private String nickname;
     private String password;
+    private String address;
 }
