@@ -67,7 +67,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private boolean isUnprotectedUrl(HttpServletRequest request) {
         String path = request.getRequestURI();
         System.out.println("path = " + path);
-        return path.equals("/auth/login") || path.equals("/join") || path.equals("/auth/refresh")
+        return path.equals("/api/v1/auth/login") || path.equals("/join") || path.equals("/api/v1/auth/refresh")
             || path.contains("/h2-console") || path.contains("favicon.ico"); // 여기서 원하는 URL 패턴을 설정
     }
 }

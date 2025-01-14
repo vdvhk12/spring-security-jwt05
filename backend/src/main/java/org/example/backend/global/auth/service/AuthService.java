@@ -36,6 +36,14 @@ public class AuthService {
         memberRepository.save(Member.setRefreshToken(member, refreshToken));
     }
 
+    public void logout(String token) {
+        String username = jwtProvider.getUsernameFromToken(token);
+        Member member = memberRepository.findByUsername(username).orElse(null);
+        memberRepository.save(member.toBuilder()
+            .refreshToken(null)
+            .build());
+    }
+
     public String tokenRefresh(String refreshToken) {
         if (jwtProvider.validateToken(refreshToken)) {
             String username = jwtProvider.getUsernameFromToken(refreshToken);

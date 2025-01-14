@@ -3,20 +3,20 @@ package org.example.backend.global.auth.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.example.backend.global.auth.dto.LoginForm;
 import org.example.backend.global.auth.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -37,6 +37,25 @@ public class AuthController {
         response.addHeader("Set-Cookie", cookie.toString());
         response.addHeader("Authorization", "Bearer " + tokens[0]);
         return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        // 토큰으로 유저엔티티에서 리프레시 토큰 삭제
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        authService.logout(token);
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", null)
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(0)
+            .sameSite("Strict")
+            .build();
+
+        // Set-Cookie 헤더로 쿠키를 응답에 추가
+        response.addHeader("Set-Cookie", cookie.toString());
+        return ResponseEntity.ok().body("로그아웃 성공");
     }
 
     @PostMapping("/refresh")
