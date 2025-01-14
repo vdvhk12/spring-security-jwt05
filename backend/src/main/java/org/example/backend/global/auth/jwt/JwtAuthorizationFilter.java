@@ -66,6 +66,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     // 권한 체크가 필요 없는 URL인지 확인하는 메서드
     private boolean isUnprotectedUrl(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.equals("/auth/login") || path.equals("/join") || path.equals("/auth/refresh"); // 여기서 원하는 URL 패턴을 설정
+        System.out.println("path = " + path);
+        return path.equals("/auth/login") || path.equals("/join") || path.equals("/auth/refresh")
+            || path.contains("/h2-console") || path.contains("favicon.ico"); // 여기서 원하는 URL 패턴을 설정
     }
 }

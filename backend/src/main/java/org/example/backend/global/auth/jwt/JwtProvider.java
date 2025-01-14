@@ -16,7 +16,7 @@ public class JwtProvider {
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     public String generateAccessToken(Long id, String username, MemberRole role) {
-        long ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000L;
+        long ACCESS_TOKEN_EXPIRATION_TIME = 10 * 60 * 1000L;
         return Jwts.builder()
             .setSubject(username)
             .claim("id", id)
